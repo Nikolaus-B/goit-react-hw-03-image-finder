@@ -46,11 +46,12 @@ export class App extends Component {
 
         const newImages = await fetchImages(clearQuery, this.state.page);
 
-        this.setState(prevState => ({
-          images: [...prevState.images, ...newImages],
-        }));
-        if (this.state.images) {
-          toast.error('Non-existing search query');
+        if (newImages.length === 0) {
+          toast.error('No more images available');
+        } else {
+          this.setState(prevState => ({
+            images: [...prevState.images, ...newImages],
+          }));
         }
       } catch (err) {
         this.setState({ error: true });
