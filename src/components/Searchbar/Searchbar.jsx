@@ -5,10 +5,16 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-export const Searchbar = () => {
+export const Searchbar = ({ submitClick }) => {
   return (
     <Header>
-      <SearchForm>
+      <SearchForm
+        onSubmit={e => {
+          e.preventDefault();
+          submitClick(e.target[1].value);
+          e.target[1].value = '';
+        }}
+      >
         <SearchFormButton type="submit"></SearchFormButton>
 
         <SearchFormInput

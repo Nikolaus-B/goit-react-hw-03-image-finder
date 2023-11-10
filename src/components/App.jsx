@@ -8,7 +8,7 @@ import { Button } from './Button/Button';
 export class App extends Component {
   state = {
     images: [],
-    query: 'cat',
+    query: '',
     page: 1,
   };
 
@@ -26,13 +26,48 @@ export class App extends Component {
     }
   }
 
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.query !== this.state.query ||
+      prevState.page !== this.state.page
+    ) {
+      const clearQuery = this.state.query.split('/').slice(1)[0];
+      try {
+        const newImages = await fetchImages(clearQuery, this.state.page);
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...newImages],
+        }));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  onSubmitClick = searchedQuery => {
+    this.setState({
+      query: `${Date.now()}/${searchedQuery}`,
+      page: 1,
+      images: [],
+    });
+  };
+
+  onLoadMoreClick = () => {
+    this.setState(prevState => {
+      return {
+        page: prevState.page + 1,
+      };
+    });
+  };
+
   render() {
     const { images } = this.state;
+
     return (
       <Container>
-        <Searchbar />
+        <Searchbar submitClick={this.onSubmitClick} />
         {images.length > 0 && <ImageGallery images={images} />}
-        <Button />
+        <Button loadMoreBtnClick={this.onLoadMoreClick} />
         <GlobalStyle />
       </Container>
     );

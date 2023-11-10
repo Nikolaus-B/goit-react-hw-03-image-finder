@@ -1,9 +1,11 @@
 import { BtnContainer, GalletyBtn } from './Button.styled';
 
-export const Button = () => {
+export const Button = ({ loadMoreBtnClick }) => {
   return (
     <BtnContainer>
-      <GalletyBtn type="button">Load More</GalletyBtn>
+      <GalletyBtn onClick={loadMoreBtnClick} type="button">
+        Load More
+      </GalletyBtn>
     </BtnContainer>
   );
 };

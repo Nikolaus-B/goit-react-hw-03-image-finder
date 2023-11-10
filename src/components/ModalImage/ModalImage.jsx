@@ -1,6 +1,6 @@
 import Modal from 'react-modal';
 import { LargeImage } from './ModalImage.styled';
-// import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 
 const customStyles = {
   overlay: {
@@ -33,10 +33,10 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const ModalImage = ({ modalIsOpen, closeModal, largeImg, topic }) => {
-  //   const fadeIn = useSpring({
-  //     opacity: modalIsOpen ? 1 : 0,
-  //     from: { opacity: 0 },
-  //   });
+  const fadeIn = useSpring({
+    opacity: modalIsOpen ? 1 : 0,
+    from: { opacity: 1 },
+  });
 
   return (
     <Modal
@@ -45,7 +45,9 @@ export const ModalImage = ({ modalIsOpen, closeModal, largeImg, topic }) => {
       style={customStyles}
       contentLabel="Image Gallery Modal"
     >
-      <LargeImage src={largeImg} alt={topic} />
+      <animated.div style={fadeIn}>
+        <LargeImage src={largeImg} alt={topic} />
+      </animated.div>
     </Modal>
   );
 };
