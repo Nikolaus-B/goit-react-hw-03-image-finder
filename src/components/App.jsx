@@ -49,6 +49,9 @@ export class App extends Component {
         this.setState(prevState => ({
           images: [...prevState.images, ...newImages],
         }));
+        if (this.state.images) {
+          toast.error('Non-existing search query');
+        }
       } catch (err) {
         this.setState({ error: true });
       } finally {
