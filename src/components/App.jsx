@@ -84,8 +84,8 @@ export class App extends Component {
       <Container>
         <Searchbar submitClick={this.onSubmitClick} />
         {error && <ErrorText />}
-        {isLoading && <Loader />}
         {images.length > 0 && <ImageGallery images={images} />}
+        {isLoading && <Loader />}
         {images.length > 0 && (
           <Button loadMoreBtnClick={this.onLoadMoreClick} />
         )}
