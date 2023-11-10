@@ -4,16 +4,23 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { fetchImages } from './api';
 import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
+import { ErrorText } from './ErrorText/ErrorText';
+import toast, { Toaster } from 'react-hot-toast';
 
 export class App extends Component {
   state = {
     images: [],
     query: '',
     page: 1,
+    isLoading: false,
+    error: false,
   };
 
   async componentDidMount() {
     try {
+      this.setState({ isLoading: true, error: false });
+
       const initialImages = await fetchImages(
         this.state.query,
         this.state.page
@@ -22,7 +29,9 @@ export class App extends Component {
         images: initialImages,
       });
     } catch (err) {
-      console.log(err);
+      this.setState({ error: true });
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -33,13 +42,17 @@ export class App extends Component {
     ) {
       const clearQuery = this.state.query.split('/').slice(1)[0];
       try {
+        this.setState({ isLoading: true, error: false });
+
         const newImages = await fetchImages(clearQuery, this.state.page);
 
         this.setState(prevState => ({
           images: [...prevState.images, ...newImages],
         }));
       } catch (err) {
-        console.log(err);
+        this.setState({ error: true });
+      } finally {
+        this.setState({ isLoading: false });
       }
     }
   }
@@ -61,14 +74,19 @@ export class App extends Component {
   };
 
   render() {
-    const { images } = this.state;
+    const { images, isLoading, error } = this.state;
 
     return (
       <Container>
         <Searchbar submitClick={this.onSubmitClick} />
+        {error && <ErrorText />}
+        {isLoading && <Loader />}
         {images.length > 0 && <ImageGallery images={images} />}
-        <Button loadMoreBtnClick={this.onLoadMoreClick} />
+        {images.length > 0 && (
+          <Button loadMoreBtnClick={this.onLoadMoreClick} />
+        )}
         <GlobalStyle />
+        <Toaster />
       </Container>
     );
   }

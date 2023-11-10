@@ -4,6 +4,7 @@ import {
   SearchFormButton,
   SearchFormInput,
 } from './Searchbar.styled';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 export const Searchbar = ({ submitClick }) => {
   return (
@@ -15,7 +16,9 @@ export const Searchbar = ({ submitClick }) => {
           e.target[1].value = '';
         }}
       >
-        <SearchFormButton type="submit"></SearchFormButton>
+        <SearchFormButton type="submit">
+          <AiOutlineSearch size={30} />
+        </SearchFormButton>
 
         <SearchFormInput
           name="input-search-img"
