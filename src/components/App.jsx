@@ -40,7 +40,7 @@ export class App extends Component {
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
     ) {
-      const clearQuery = this.state.query.split('/').slice(1)[0];
+      const clearQuery = this.state.query.split('/').pop();
       try {
         this.setState({ isLoading: true, error: false });
 
